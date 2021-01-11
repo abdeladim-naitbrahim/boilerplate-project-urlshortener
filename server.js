@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const bodyParser = require("body-parser");
-
+var dns = require('dns');
 /** bodyParser.urlencoded(options)
  * Parses the text as URL encoded data (which is how browsers tend to send form data from regular forms set to POST)
  * and exposes the resulting object (containing the keys and values) on req.body
@@ -23,19 +23,28 @@ app.use(bodyParser.json());
  
  app.post('/api/shorturl/new', function(req, res) {
 	 
-   console.log(req.body);
+   //console.log(req.body);
    let x=req.body.url;
  if((/^https:\/\/(www\.)*(([\w-])+)(\.([\w-]+))+(\/\w+)*$/).test(x))
  {let y={ original_url : x, short_url : ++i};
 	 urls[i]=y;
+   console.log(y);
  res.json(y);}
  else
-	 res.json({ error: 'invalid url' });
+  {console.log({ error: 'invalid url' })
+	 res.json({ error: 'invalid url' });}
 });
 
 app.get('/api/shorturl/:idurl', function(req, res) {
   console.log(urls[req.params.idurl])
-  res.redirect(urls[req.params.idurl].original_url);
+  dns.lookup('www.w3schools.com', function (err, addresses, family) {
+    if(!err)
+    res.redirect(urls[req.params.idurl].original_url);
+    else
+    console.log("invalide");
+  console.log(addresses);
+});
+  
 });
 const port = process.env.PORT || 3000;
 
