@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 	 
    console.log(req.body);
    let x=req.body.url;
- if( (/^https:\/\/www(\.([\w-])+)(\.([\w-]+))+(\/\w+)*$/).test(x))
+ if((/^https:\/\/(www\.)*(([\w-])+)(\.([\w-]+))+(\/\w+)*$/).test(x))
  {let y={ original_url : x, short_url : ++i};
 	 urls[i]=y;
  res.json(y);}
